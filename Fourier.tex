@@ -100,7 +100,7 @@ lograr con este.
 \end{abstract}
 
 \begin{keyword}
-Polynomial \sep solution \sep degree of a polynomial \sep linear 
+Trasformada de Fourier \sep solution \sep degree of a polynomial \sep linear 
 \sep quadratic \sep quadratic formula \sep roots \sep cubics \sep quartics
 %% keywords here, in the form: keyword \sep keyword
 
@@ -121,9 +121,6 @@ Polynomial \sep solution \sep degree of a polynomial \sep linear
 \[
     P(x) = a_0 + a_1x + a_2x^2 + ...  + a_ix^i
 \]
-
-It will return 0 no matter what. Since it returns 0 for any given value of $x$, it has infinite solutions.\cite{1137202}
-\label{S:1}
 
 \section{Transformada de Fourier}
 La transformada de Fourier nos permite, entre muchas cosas, cambiar la forma en 
@@ -193,46 +190,45 @@ Entonces, pordemos acomodar nuestra ecuación para que satisfaga alguna:\\
   
 
 \section{Tranformada Inversa de Fourier}
-La transformada inversa de Fourier, básicamente, revierte el estado en que se encuentra la representación de una onda luego de aplicarle la Transformada de Fourier normal. De forma más específica, convierte una serie de tamaño potencia de 2 de números complejos, puntos en el espectro de frecuencia, en una serie del mismo tamaño en un dominio de tiempo.
+La transformada inversa de Fourier, básicamente, revierte el estado en que se encuentra la representación de una onda luego de aplicarle la Transformada de Fourier normal. De forma más específica, convierte una serie de tamaño potencia de 2 de números complejos, puntos en el espectro de frecuencia, en una serie del mismo tamaño en un dominio de tiempo.\\
+
 \section{Algoritmo Cooley-Tukey}
-Pensando en formas de implementar y mejorar la TFD, James W. Cooley y John W. Tukey publicaron en su paper insigne en 1965 una implementación de la transformada utilizando el paradigma "divide y vencerás". En este, se destaca la ventaja que presenta el algoritmo en arreglos de tamaño N potencia de 2 sobre otros con N distintos, al lograr una complejidad de $O(Nlog(N))$ para el primer caso. \\
+Pensando en formas de implementar y mejorar la TFD, James W. Cooley y John W. Tukey publicaron en su paper insigne en 1965 una implementación de la transformada utilizando el paradigma "divide y vencerás", denominada como Transformada Rápida de Fourier. En dicho trabajo, se destaca la ventaja que presenta el algoritmo en arreglos de tamaño N potencia de 2 sobre otros con N distintos, al lograr una complejidad de $O(Nlog(N))$ para el primer caso. \\
 
 Este algoritmo consigue reducir el número de cálculos al dividir el arreglo de tamaño N del polinomio en 2 de tamaño N/2, uno con el contenido de los índices impares y el otro con el de los índices pares. \\
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
-    %%\includegraphics[scale=0.5]{Figuras/F_12_2.jpg}
-    \includegraphics[scale=0.5]{Figuras/Serie-transformada.jpg}
+    \includegraphics[scale=0.9]{Figuras/F_12_2.png}
     %%\medskip
     \\
-    \small Figura3. Descomposición de arreglo de coeficientes del polinomio. Fuente: The Scientist and Engineer's Guide to Digital Signal Processing.\\
+    \small Figura3. Descomposición de arreglo de coeficientes del polinomio. Fuente: The Scientist and Engineer's Guide to Digital Signal Processing.
 \end{figure}\\
 Esta distribución también se puede lograr a través usando inversión de bits.\\
 \begin{figure}[h]
     \centering
-    %%\includegraphics[scale=0.5]{Figuras/F_12_3.jpg}
-    \includegraphics[scale=0.5]{Figuras/Serie-transformada.jpg}
+    \includegraphics[scale=0.9]{Figuras/F_12_3.png}
     %%\medskip
     \\
-    \small Figura4. Ordenamiento por inversión de bits. Fuente: The Scientist and Engineer's Guide to Digital Signal Processing.\\
-\end{figure}\\
-Una vez dividido el arreglo en partes más pequeñas, el algoritmo busca encontrar su valor en el espectro de frecuencia, donde obviamente, la frecuencia de las divisiones más pequeñas (1 solo punto) será 1. Luego de esto, tendrá que regresar y juntar los resultados en el orden inverso al que se hicieron las divisiones. Para sumar los puntos de cada una, también se tienen que separar completando con 0s las posiciones pares o impares, dependiendo del sub-arreglo. Esta discordancia en la separación con 0s, o de forma más precisa, este corrimiento del segundo sub-arreglo corresponde a la multiplicación del mismo por un sinusoide. \\
-\begin{figure}[h]
+    \small Figura4. Ordenamiento por inversión de bits. Fuente: The Scientist and Engineer's Guide to Digital Signal Processing.
+\end{figure}
+Una vez dividido el arreglo en partes más pequeñas, el algoritmo busca encontrar su valor en el espectro de frecuencia, donde obviamente, la frecuencia de las divisiones más pequeñas, es decir de 1 solo punto, será igual a sí mismo. Luego de esto, tendrá que regresar y juntar los resultados en el orden inverso al que se hicieron las divisiones. Para sumar los puntos de cada una, también se tienen que diluir la señal completando con 0s las posiciones pares o impares, dependiendo del sub-arreglo, lo que equivale a una duplicación de la data de la señal en el dominio de la frecuencia. Esta discordancia en la separación con 0s, o de forma más precisa, este corrimiento del segundo sub-arreglo corresponde a la multiplicación del mismo por un sinusoide. 
+\clearpage
+\begin{figure}[h!]
     \centering
-    %%\includegraphics[scale=0.5]{Figuras/F_12_4.jpg}
-    \includegraphics[scale=0.5]{Figuras/Serie-transformada.jpg}
+    \includegraphics[scale=0.9]{Figuras/F_12_4.png}
     %%\medskip
     \\
-    \small Figura5. Separación de puntos con 0s y multiplicación por sinusoides. Fuente: The Scientist and Engineer's Guide to Digital Signal Processing.\\
-\end{figure}\\
+    \small Figura5. Separación de puntos con 0s y multiplicación por sinusoides. Fuente: The Scientist and Engineer's Guide to Digital Signal Processing.
+\end{figure}
 Esta forma de sumar los puntos del espectro mientras se los reordena, tiene el nombre de \textbf{mariposa} y es la operación base de toda la TFR. \\
-\begin{figure}[h]
+
+\begin{figure}[!h]
     \centering
-    %%\includegraphics[scale=0.5]{Figuras/F_12_5.jpg}
-    \includegraphics[scale=0.5]{Figuras/Serie-transformada.jpg}
+    \includegraphics[scale=0.7]{Figuras/F_12_5.png}
     %%\medskip
     \\
     \small Figura6. Flujo cruzado de operaciones o \textit{mariposas}. Fuente: The Scientist and Engineer's Guide to Digital Signal Processing.\\
-\end{figure}\\
+\end{figure}
 
 
 \section{Algoritmo ...}
@@ -260,12 +256,12 @@ Besides integral fields, there are other fields where polynomials will behave di
 
 %% References with bibTeX database:
 
-\bibliographystyle{model1-num-names}
+%%\bibliographystyle{model1-num-names}
 \appendix
 \section*{Bibliography}
-http://www.ijsea.com/archive/volume2/issue7/IJSEA02071002.pdf
-http://people.scs.carleton.ca/~maheshwa/courses/5703COMP/16Fall/FFT\_Report.pdf
-\bibliography{sample.bib}
+http://www.ijsea.com/archive/volume2/issue7/IJSEA02071002.pdf\\
+http://people.scs.carleton.ca/~maheshwa/courses/5703COMP/16Fall/FFT\_Report.pdf\\
+%%\bibliography{}
 
 %% Authors are advised to submit their bibtex database files. They are
 %% requested to list a bibtex style file in the manuscript if they do
